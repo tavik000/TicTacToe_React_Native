@@ -48,15 +48,15 @@ export default class GameBoard extends Component {
             setTimeout(() => {
                 this.componentDidUpdate();
                 setTimeout(() => {
-                    if (result == -1) {
                         this.AIAction();
-                    }}, 3)
+                    }, 3)
             }, 2)
         }
     }
 
     AIAction() {
-        while (true) {
+        const {result} = this.state
+        while (result === -1) {
             const {userInputs, AIInputs} = this.state;
             const randomNumber = Number.parseInt(Math.random() * 9);
 

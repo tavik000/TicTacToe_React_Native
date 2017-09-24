@@ -7,6 +7,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+
+import App from './App'
 import Circle from './Circle'
 import Cross from './Cross'
 import {centerPoints, areas, conditions} from "../constants/game";
@@ -18,11 +20,18 @@ export default class GameBoard extends Component {
     constructor() {
         super();
         this.state = {
+            gameEnd: false,
             userInputs: [],
             AIInputs: [], // if gameMode = 1 (multiplayer) then AIInputs set to be Player2 Inputs
             result: -1  // result: -1=Game in progress; 0=player win; 1=AI win; 2=Draw
             // result: 3=multiplayer circle Win; 4=multiplayer cross win
         }
+    }
+
+    endGame() {
+        this.setState({
+            gameEnd: true
+        });
     }
 
     restart() {
@@ -119,7 +128,7 @@ export default class GameBoard extends Component {
     }
 
     AIAction() {
-        const {result} = this.state
+        const {result} = this.state;
         while (result === -1) {
             const {userInputs, AIInputs} = this.state;
             const randomNumber = Number.parseInt(Math.random() * 9);
@@ -175,97 +184,117 @@ export default class GameBoard extends Component {
     }
 
     render() {
-        const {userInputs, AIInputs, result} = this.state;
+        const {gameEnd, userInputs, AIInputs, result} = this.state;
         const {gameMode} = this.props;
         return (
-            <View style={styles.container}>
-                <View style={[styles.JudgeMessage, styles.roundIndicator]}>
-                    {gameMode === 1 && <View>
-                        {
-                            round === 0 && <Text style={styles.Text}>Circle Turn</Text>
-                        }
-                        {
-                            round === 1 && <Text style={styles.Text}>Cross Turn</Text>
-                        }</View>
-                    }
-                </View>
-                <TouchableWithoutFeedback onPress={e => this.boarcClickHandler(e)}>
-                    <View style={styles.board}>
-                        <View style={[styles.line, {
-                            width: 3,
-                            height: 306,
-                            transform: [
-                                {translateX: 100}
-                            ]
-                        }]}/>
-                        <View style={[styles.line, {
-                            width: 3,
-                            height: 306,
-                            transform: [
-                                {translateX: 203}
-                            ]
-                        }]}/>
-                        <View style={[styles.line, {
-                            width: 306,
-                            height: 3,
-                            transform: [
-                                {translateY: 100}
-                            ]
-                        }]}/>
-                        <View style={[styles.line, {
-                            width: 306,
-                            height: 3,
-                            transform: [
-                                {translateY: 203}
-                            ]
-                        }]}/>
-                    </View>
-                </TouchableWithoutFeedback>
+            <View>
                 {
-                    userInputs.map((d, i) => (
-                        <Circle
-                            key={i}
-                            xTranslate={centerPoints[d].x}
-                            yTranslate={centerPoints[d].y}
-                            color='deepskyblue'
-                        />
-                    ))
+                    gameEnd ? (
+                        <App gameEnd={true}/>
+                    ) : (
+
+                        <View style={styles.container}>
+                            <View style={[styles.JudgeMessage, styles.roundIndicator]}>
+                                {gameMode === 1 && <View>
+                                    {
+                                        round === 0 && <Text style={styles.Text}>Circle Turn</Text>
+                                    }
+                                    {
+                                        round === 1 && <Text style={styles.Text}>Cross Turn</Text>
+                                    }</View>
+                                }
+                            </View>
+                            <TouchableWithoutFeedback onPress={e => this.boarcClickHandler(e)}>
+                                <View style={styles.board}>
+                                    <View style={[styles.line, {
+                                        width: 3,
+                                        height: 306,
+                                        transform: [
+                                            {translateX: 100}
+                                        ]
+                                    }]}/>
+                                    <View style={[styles.line, {
+                                        width: 3,
+                                        height: 306,
+                                        transform: [
+                                            {translateX: 203}
+                                        ]
+                                    }]}/>
+                                    <View style={[styles.line, {
+                                        width: 306,
+                                        height: 3,
+                                        transform: [
+                                            {translateY: 100}
+                                        ]
+                                    }]}/>
+                                    <View style={[styles.line, {
+                                        width: 306,
+                                        height: 3,
+                                        transform: [
+                                            {translateY: 203}
+                                        ]
+                                    }]}/>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            {
+                                userInputs.map((d, i) => (
+                                    <Circle
+                                        key={i}
+                                        xTranslate={centerPoints[d].x}
+                                        yTranslate={centerPoints[d].y}
+                                        color='deepskyblue'
+                                    />
+                                ))
+                            }
+                            {
+                                AIInputs.map((d, i) => (
+                                    <Cross
+                                        key={i}
+                                        xTranslate={centerPoints[d].x}
+                                        yTranslate={centerPoints[d].y}
+                                        color='red'
+                                    />
+                                ))
+                            }
+                            <View style={styles.JudgeMessage}>
+                                {
+                                    result === 2 && <Text style={styles.Text}>Draw</Text>
+                                }
+                                {
+                                    result === 0 && <Text style={styles.Text}>You Win</Text>
+                                }
+                                {
+                                    result === 1 && <Text style={styles.Text}>You Lose</Text>
+                                }
+                                {
+                                    result === 3 && <Text style={styles.Text}>Circle Win</Text>
+                                }
+                                {
+                                    result === 4 && <Text style={styles.Text}>Cross Win</Text>
+                                }
+                                {
+                                    result !== -1 &&
+                                    <View>
+                                        <TouchableOpacity onPress={() => this.restart()}>
+                                            <View style={styles.menuButton}>
+                                            <Text>
+                                                Click here to restart
+                                            </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.endGame()}>
+                                            <View style={styles.menuButton}>
+                                            <Text>
+                                                Back to Menu
+                                            </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+                            </View>
+                        </View>
+                    )
                 }
-                {
-                    AIInputs.map((d, i) => (
-                        <Cross
-                            key={i}
-                            xTranslate={centerPoints[d].x}
-                            yTranslate={centerPoints[d].y}
-                            color='red'
-                        />
-                    ))
-                }
-                <View style={styles.JudgeMessage}>
-                    {
-                        result === 2 && <Text style={styles.Text}>Draw</Text>
-                    }
-                    {
-                        result === 0 && <Text style={styles.Text}>You Win</Text>
-                    }
-                    {
-                        result === 1 && <Text style={styles.Text}>You Lose</Text>
-                    }
-                    {
-                        result === 3 && <Text style={styles.Text}>Circle Win</Text>
-                    }
-                    {
-                        result === 4 && <Text style={styles.Text}>Cross Win</Text>
-                    }
-                    {
-                        result !== -1 &&
-                        <TouchableOpacity onPress={() => this.restart()}>
-                            <Text style={styles.instructions}>
-                                Click here to restart
-                            </Text>
-                        </TouchableOpacity>
-                    }
-                </View>
             </View>
         );
     }
@@ -299,5 +328,9 @@ const styles = StyleSheet.create({
     },
     Text: {
         fontSize: 40
+    },
+    menuButton: {
+        height: 30,
+        alignItems: 'center'
     }
 });

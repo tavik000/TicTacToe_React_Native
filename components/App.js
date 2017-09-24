@@ -16,37 +16,45 @@ import Header from './Header'
 import GameOption from './GameOption'
 
 export default class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             toOption: false
         }
+
     }
 
-    startOption(){
-        this.setState({ toOption: true })
+    startOption() {
+        this.setState({toOption: true})
     }
 
 
     render() {
-        const { toOption } = this.state;
+        const {toOption} = this.state;
+        const {gameEnd} = this.props;
         return (
             <View style={styles.container}>
-                <Header/>
                 {
-                    toOption ? (
+                    gameEnd ? (
+                        <View/>
+                    ) : (
+                        <Header/>
+                    )
+                }
+                {
+                    toOption || gameEnd ? (
                         <GameOption/>
                     ) : (
-                     <View>
-                         <Text style={styles.welcome}>
-                             Welcome to the game!
-                         </Text>
-                         <TouchableOpacity onPress={() => this.startOption()}>
-                             <Text style={styles.instructions}>
-                                 Click here to start
-                             </Text>
-                         </TouchableOpacity>
-                     </View>
+                        <View>
+                            <Text style={styles.welcome}>
+                                Welcome to the game!
+                            </Text>
+                            <TouchableOpacity onPress={() => this.startOption()}>
+                                <Text style={styles.instructions}>
+                                    Click here to start
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     )
                 }
             </View>

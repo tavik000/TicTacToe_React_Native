@@ -4,14 +4,17 @@ TicTacToe_React_Native
 
 This is a Tic Tac Toe Game Project in React Native.
 
-Learn from EcutDavid (https://github.com/EcutDavid/react-native-tic-tac-toe)
+Learn from [EcutDavid TicTacToe](https://github.com/EcutDavid/react-native-tic-tac-toe)
 
-Youtube Video (https://www.youtube.com/watch?time_continue=3&v=_w7RcjvcSRs)
+[Youtube Video](https://www.youtube.com/watch?time_continue=3&v=_w7RcjvcSRs)
 
 
 Author: key
 
 
+## Component
+
+[React-Native-Sound](https://github.com/zmxv/react-native-sound)
 
 
 -----
@@ -27,8 +30,11 @@ Author: key
 
 ## Notice
 When I use react-native component following to official document (https://github.com/zmxv/react-native-sound).
+
 I can not play my sound file and show the message `playback failed due to audio decoding errors`.
+
 I fix the problem out and get helps from (https://github.com/zmxv/react-native-sound/issues/20)
+
 ![problemFix](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/sound_problem.png)
 
 

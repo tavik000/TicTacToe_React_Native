@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 20,
         backgroundColor: 'skyblue',
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     title: {
         color: '#fff',
         fontWeight: 'bold',
         flex: 1,
-        fontSize: 2,
+        fontSize: 20,
         textAlign: 'center',
-        margin: 10,
+        margin: 10
     },
 });

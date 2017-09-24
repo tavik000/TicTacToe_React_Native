@@ -13,35 +13,35 @@ import {
 } from 'react-native';
 
 import Header from './Header'
-import GameBoard from './GameBoard'
+import GameOption from './GameOption'
 
 export default class App extends Component {
     constructor(props){
         super(props);
         this.state={
-            gameStarted: false
+            toOption: false
         }
     }
 
-    startGame(){
-        this.setState({ gameStarted: true })
+    startOption(){
+        this.setState({ toOption: true })
     }
 
 
     render() {
-        const { gameStarted } = this.state;
+        const { toOption } = this.state;
         return (
             <View style={styles.container}>
                 <Header/>
                 {
-                    gameStarted ? (
-                        <GameBoard/>
+                    toOption ? (
+                        <GameOption/>
                     ) : (
                      <View>
                          <Text style={styles.welcome}>
                              Welcome to the game!
                          </Text>
-                         <TouchableOpacity onPress={() => this.startGame()}>
+                         <TouchableOpacity onPress={() => this.startOption()}>
                              <Text style={styles.instructions}>
                                  Click here to start
                              </Text>

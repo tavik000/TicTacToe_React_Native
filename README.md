@@ -30,7 +30,7 @@ Author: key
 -----
 
 ## Notice
-When I use react-native component following to official document (https://github.com/zmxv/react-native-sound).
+When I use react-native-sound component following official document (https://github.com/zmxv/react-native-sound).
 
 I can not play my sound file and show the message `playback failed due to audio decoding errors`.
 

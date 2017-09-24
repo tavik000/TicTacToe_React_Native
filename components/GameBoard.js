@@ -30,6 +30,48 @@ export default class GameBoard extends Component {
         })
     }
 
+    clickSound() {
+        // Import the react-native-sound module
+        var Sound = require('react-native-sound');
+
+// Enable playback in silence mode (iOS only)
+        Sound.setCategory('Playback');
+
+// Load the sound file 'click.mp3' from the app bundle
+// See notes below about preloading sounds within initialization code below.
+        var click = new Sound('click.mp3', Sound.MAIN_BUNDLE, (error) => {
+            if (error) {
+                console.log('failed to load the sound', error);
+                return;
+            } else {
+                click.play((success) => {
+                    if (success) {
+                        // console.log('successfully finished playing');
+                    } else {
+                        console.log('playback failed due to audio decoding errors');
+                        // reset the player to its uninitialized state (android only)
+                        // this is the only option to recover after an error occured and use the player again
+                        click.reset();
+                    }
+                });
+            }
+            // loaded successfully
+            // console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+        });
+
+// Set sound volume
+        click.setVolume(1);
+
+// Position the sound to the full right in a stereo field
+        click.setPan(1);
+
+// Loop indefinitely until stop() is called
+        click.setNumberOfLoops(-1);
+
+// Release the audio player resource
+        click.release();
+    }
+
     boarcClickHandler(e) {
         const {locationX, locationY} = e.nativeEvent;
         const {userInputs, AIInputs, result} = this.state;
@@ -45,11 +87,12 @@ export default class GameBoard extends Component {
             result === -1
         ) {
             this.setState({userInputs: userInputs.concat(area.id)})
+            this.clickSound()
             setTimeout(() => {
                 this.componentDidUpdate();
                 setTimeout(() => {
-                        this.AIAction();
-                    }, 3)
+                    this.AIAction();
+                }, 3)
             }, 2)
         }
     }
@@ -194,6 +237,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     Text: {
-        fontSize:40
+        fontSize: 40
     }
 });

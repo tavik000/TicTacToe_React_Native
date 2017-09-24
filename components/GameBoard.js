@@ -29,6 +29,7 @@ export default class GameBoard extends Component {
     }
 
     endGame() {
+        this.restart(); //for reset to initial state
         this.setState({
             gameEnd: true
         });

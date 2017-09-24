@@ -11,23 +11,30 @@ import Circle from './Circle'
 import Cross from './Cross'
 import {centerPoints, areas, conditions} from "../constants/game";
 
+let round = 0; //for multiplayer used round = 0 is player1 round; round = 2 is player2 round
 
 export default class GameBoard extends Component {
+
     constructor() {
         super();
         this.state = {
             userInputs: [],
-            AIInputs: [],
+            AIInputs: [], // if gameMode = 1 (multiplayer) then AIInputs set to be Player2 Inputs
             result: -1  // result: -1=Game in progress; 0=player win; 1=AI win; 2=Draw
+            // result: 3=multiplayer circle Win; 4=multiplayer cross win
         }
     }
 
     restart() {
+        const {gameMode} = this.props;
         this.setState({
             userInputs: [],
             AIInputs: [],
             result: -1
-        })
+        });
+        if (gameMode === 1) {
+            round = 0
+        }
     }
 
     clickSound() {
@@ -63,7 +70,7 @@ export default class GameBoard extends Component {
         click.setVolume(1);
 
 // Position the sound to the full right in a stereo field
-        click.setPan(1);
+//         click.setPan(1);
 
 // Loop indefinitely until stop() is called
         click.setNumberOfLoops(-1);
@@ -76,6 +83,8 @@ export default class GameBoard extends Component {
         const {locationX, locationY} = e.nativeEvent;
         const {userInputs, AIInputs, result} = this.state;
         const inputs = userInputs.concat(AIInputs);
+        const {gameMode} = this.props;
+
 
         const area = areas.find(d =>
             (locationX >= d.startX && locationX <= d.endX) &&
@@ -86,14 +95,26 @@ export default class GameBoard extends Component {
             inputs.every(d => d !== area.id) &&
             result === -1
         ) {
-            this.setState({userInputs: userInputs.concat(area.id)})
-            this.clickSound()
-            setTimeout(() => {
-                this.componentDidUpdate();
+            if (gameMode === 0) {
+                this.setState({userInputs: userInputs.concat(area.id)});
+                this.clickSound();
                 setTimeout(() => {
-                    this.AIAction();
-                }, 3)
-            }, 2)
+                    this.componentDidUpdate();
+                    setTimeout(() => {
+                        this.AIAction();
+                    }, 3)
+                }, 2)
+            } else if (gameMode === 1) {
+                this.clickSound();
+                if (round === 0) {
+                    this.setState({userInputs: userInputs.concat(area.id)});
+                    round = 1
+                } else if (round === 1) {
+                    this.setState({AIInputs: AIInputs.concat(area.id)});
+                    round = 0
+                }
+
+            }
         }
     }
 
@@ -118,19 +139,35 @@ export default class GameBoard extends Component {
     componentDidUpdate() {
         const {userInputs, AIInputs, result} = this.state;
         const inputs = userInputs.concat(AIInputs);
+        const {gameMode} = this.props;
 
-        if (inputs.length >= 5) {
-            let res = this.judgeWinner(userInputs);
-            if (res && result !== 0) {
-                this.setState({result: 0});
-                return
+        if (gameMode === 0) {
+            if (inputs.length >= 5) {
+                let res = this.judgeWinner(userInputs);
+                if (res && result !== 0) {
+                    this.setState({result: 0});
+                    return
+                }
+                res = this.judgeWinner(AIInputs);
+                if (res && result !== 1) {
+                    this.setState({result: 1});
+                    return
+                }
             }
-            res = this.judgeWinner(AIInputs);
-            if (res && result !== 1) {
-                this.setState({result: 1});
-                return
+        } else if (gameMode === 1)
+            if (inputs.length >= 5) {
+                let res = this.judgeWinner(userInputs);
+                if (res && result !== 3) {
+                    this.setState({result: 3});
+                    return
+                }
+                res = this.judgeWinner(AIInputs);
+                if (res && result !== 4) {
+                    this.setState({result: 4});
+                    return
+                }
             }
-        }
+
 
         if (inputs.length >= 9 && result === -1) {
             this.setState({result: 2});
@@ -139,8 +176,19 @@ export default class GameBoard extends Component {
 
     render() {
         const {userInputs, AIInputs, result} = this.state;
+        const {gameMode} = this.props;
         return (
             <View style={styles.container}>
+                <View style={[styles.JudgeMessage, styles.roundIndicator]}>
+                    {gameMode === 1 && <View>
+                        {
+                            round === 0 && <Text style={styles.Text}>Circle Turn</Text>
+                        }
+                        {
+                            round === 1 && <Text style={styles.Text}>Cross Turn</Text>
+                        }</View>
+                    }
+                </View>
                 <TouchableWithoutFeedback onPress={e => this.boarcClickHandler(e)}>
                     <View style={styles.board}>
                         <View style={[styles.line, {
@@ -204,6 +252,12 @@ export default class GameBoard extends Component {
                         result === 1 && <Text style={styles.Text}>You Lose</Text>
                     }
                     {
+                        result === 3 && <Text style={styles.Text}>Circle Win</Text>
+                    }
+                    {
+                        result === 4 && <Text style={styles.Text}>Cross Win</Text>
+                    }
+                    {
                         result !== -1 &&
                         <TouchableOpacity onPress={() => this.restart()}>
                             <Text style={styles.instructions}>
@@ -220,7 +274,14 @@ export default class GameBoard extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 120,
+        marginTop: 120
+    },
+    roundIndicator: {
+        position: 'absolute',
+        transform: [
+            {translateX: 60},
+            {translateY: -60},
+        ]
     },
     board: {
         width: 312,

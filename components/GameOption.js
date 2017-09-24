@@ -13,34 +13,43 @@ export default class GameOption extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameStarted: false
+            gameStarted: false,
+            gameMode: 0 // 0: single player; 1: multiplayer
         }
     }
 
-    startGame() {
-        this.setState({gameStarted: true})
+    startGame(e) {
+        const mode = e;
+        this.setState({
+            gameMode: mode
+        });
+        setTimeout(() => {
+            this.setState({
+                gameStarted: true
+            })
+        }, 2)
     }
 
     render() {
-        const {gameStarted} = this.state;
+        const {gameStarted, gameMode} = this.state;
         return (
             <View>
                 {
                     gameStarted ? (
-                        <GameBoard/>
+                        <GameBoard gameMode={gameMode}/>
                     ) : (
                         <View style={styles.container}>
                             <View style={styles.boxContainer}>
                             </View>
                             <View style={styles.boxContainer}>
-                                <TouchableOpacity style={styles.btn} onPress={() => this.startGame()}>
+                                <TouchableOpacity style={styles.btn} onPress={(e) => this.startGame(0)}>
                                     <Text style={styles.btnText}>
                                         Single Player
                                     </Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.boxContainer}>
-                                <TouchableOpacity style={styles.btn} onPress={() => this.startGame()}>
+                                <TouchableOpacity style={styles.btn} onPress={(e) => this.startGame(1)}>
                                     <Text style={styles.btnText}>
                                         Multiplayer
                                     </Text>

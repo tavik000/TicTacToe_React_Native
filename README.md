@@ -5,7 +5,8 @@ TicTacToe_React_Native
 This is a Tic Tac Toe Game Project in React Native.
 
 Learn from EcutDavid (https://github.com/EcutDavid/react-native-tic-tac-toe)
-*Youtube Video (https://www.youtube.com/watch?time_continue=3&v=_w7RcjvcSRs)
+
+Youtube Video (https://www.youtube.com/watch?time_continue=3&v=_w7RcjvcSRs)
 
 
 Author: key

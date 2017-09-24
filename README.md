@@ -22,11 +22,11 @@ Author: key
 ## Screenshots
 
 ![scr01](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr01.png)
+![scr05](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr05.png)
+![scr06](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr06.png)
 ![scr02](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr02.png)
 ![scr03](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr03.png)
 ![scr04](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr04.png)
-![scr05](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr05.png)
-![scr06](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr06.png)
 ![scr07](https://github.com/tavik000/TicTacToe_React_Native/raw/master/Screenshots/scr07.png)
 
 -----

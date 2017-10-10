@@ -9,7 +9,8 @@ Webstorm 2017.2.4 <br>
 Node 8.6.0 <br>
 react-native-cli: 2.0.1 <br>
 npm 5.3.0 <br>
-watchman 4.9.0
+watchman 4.9.0 <br>
+Xcode 9.0
 
 ## Reference
 Learn from [EcutDavid TicTacToe](https://github.com/EcutDavid/react-native-tic-tac-toe) ; [Youtube_Video](https://www.youtube.com/watch?time_continue=3&v=_w7RcjvcSRs)
